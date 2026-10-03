@@ -2,161 +2,144 @@ export const profile = {
   name: "Ketan Ratan Roy",
   firstName: "Ketan",
   initials: "KR",
-  role: "Software Engineer",
-  company: "Dassault Systèmes",
   email: "ketanroy0866@gmail.com",
   resumeUrl: "/Ketan_Roy_Resume.pdf",
-  summary:
-    "Software engineer at Dassault Systèmes building backend systems in Python and C++, with a soft spot for cloud-native infrastructure and real-time AI.",
+  // Drop a photo in /public and set this (e.g. "/me.jpg") to replace the initials card.
+  photo: null as string | null,
 };
 
-export const links = [
-  { label: "GitHub", href: "https://github.com/roy-ketan" },
-  { label: "LinkedIn", href: "https://linkedin.com/in/ketan-roy/" },
-  { label: "LeetCode", href: "https://leetcode.com/u/ketanroy01/" },
-  { label: "Codeforces", href: "https://codeforces.com/profile/jets_psd" },
-  { label: "Email", href: "mailto:ketanroy0866@gmail.com" },
-];
+export const socials = [
+  { label: "GITHUB", href: "https://github.com/roy-ketan", color: "ink" },
+  { label: "LINKEDIN", href: "https://linkedin.com/in/ketan-roy/", color: "blue" },
+  { label: "LEETCODE", href: "https://leetcode.com/u/ketanroy01/", color: "amber" },
+  { label: "CODEFORCES", href: "https://codeforces.com/profile/jets_psd", color: "purple" },
+  { label: "EMAIL", href: "mailto:ketanroy0866@gmail.com", color: "lime" },
+] as const;
 
-export type Project = {
+export type Work = {
+  slug: string;
   title: string;
   tag: string;
   date: string;
+  aspect: string;
+  bg: string;
   blurb: string;
   highlights: string[];
+  more?: { heading: string; items: string[] };
   stack: string[];
 };
 
-export const projects: Project[] = [
+// Order matters: even indexes fill the left column, odd the right.
+export const works: Work[] = [
   {
+    slug: "cloudcart",
     title: "CloudCart",
-    tag: "KUBERNETES",
+    tag: "CLOUD NATIVE",
     date: "Mar 2025",
-    blurb: "Cloud-native e-commerce platform running on Amazon EKS.",
+    aspect: "16 / 9",
+    bg: "#dfeaf6",
+    blurb:
+      "A production-grade, three-tier e-commerce platform: 8 microservices and 2 databases orchestrated on Amazon EKS.",
     highlights: [
-      "Production-grade 3-tier platform with 8 microservices and 2 databases on Amazon EKS.",
-      "Containerized and automated deployments with Docker, Helm and eksctl.",
-      "Secured image handling and zero-downtime updates via AWS ECR, IAM OIDC and ALB Ingress Controller.",
+      "Built and deployed a 3-tier e-commerce platform with 8 microservices and 2 databases on Amazon EKS, using Kubernetes for scalable orchestration.",
+      "Containerized and automated deployments with Docker, Helm and eksctl, streamlining infrastructure setup and CI/CD workflows.",
+      "Configured AWS ECR, IAM OIDC and the ALB Ingress Controller for secure image handling, high availability and zero-downtime updates.",
     ],
-    stack: ["EKS", "Docker", "Helm", "eksctl", "AWS ECR", "ALB Ingress"],
+    stack: ["Kubernetes", "Amazon EKS", "Docker", "Helm", "eksctl", "AWS ECR", "IAM OIDC", "ALB Ingress"],
   },
   {
-    title: "StudyLink",
-    tag: "CV / DJANGO",
-    date: "Oct 2024",
-    blurb: "Student collaboration platform with a hands-free Air Canvas.",
+    slug: "drivecall-ai",
+    title: "DriveCall AI",
+    tag: "VOICE AI",
+    date: "Mar 2024",
+    aspect: "1 / 1",
+    bg: "#22211f",
+    blurb:
+      "A real-time AI voice agent for automotive call centers that holds natural, human-like conversations.",
     highlights: [
-      "Study groups of up to 50 members, academic Q&A and video solutions.",
-      "Real-time drawing tool using OpenCV and MediaPipe hand-gesture recognition.",
-      "Air Canvas integrated into a Django app for hands-free interaction.",
+      "Built a real-time voice agent handling 20+ concurrent sessions using LiveKit, OpenAI GPT-4 and Deepgram STT.",
+      "Reached 95%+ speech detection accuracy with Silero VAD, supporting natural turn-taking and fewer interruptions.",
+      "Implemented end-to-end TTS and STT pipelines with OpenAI and Deepgram, producing human-like responses in under 1.2 seconds.",
+    ],
+    stack: ["LiveKit", "OpenAI GPT-4", "Deepgram", "Silero VAD", "Python"],
+  },
+  {
+    slug: "studylink",
+    title: "StudyLink",
+    tag: "EDTECH",
+    date: "Oct 2024",
+    aspect: "340 / 293",
+    bg: "#dce2e1",
+    blurb:
+      "A student collaboration platform with a hands-free Air Canvas you draw on with gestures.",
+    highlights: [
+      "Led the design and deployment of StudyLink, letting students form study groups of up to 50 members, post academic questions and exchange video solutions.",
+      "Developed a real-time drawing tool using OpenCV and MediaPipe hand-gesture recognition.",
+      "Integrated the Air Canvas feature into the Django app for hands-free interaction on the platform.",
     ],
     stack: ["Django", "OpenCV", "MediaPipe", "Python"],
   },
   {
-    title: "DriveCall AI",
-    tag: "VOICE AI",
-    date: "Mar 2024",
-    blurb: "Real-time AI voice agent for automotive call centers.",
+    slug: "dassault",
+    title: "Rule Automation at Dassault",
+    tag: "BACKEND",
+    date: "2025 – now",
+    aspect: "756 / 491",
+    bg: "#0a5235",
+    blurb:
+      "Backend services at Dassault Systèmes that validate complex system constraints and keep data models consistent.",
     highlights: [
-      "Handles 20+ concurrent sessions with LiveKit, OpenAI GPT-4 and Deepgram STT.",
-      "95%+ speech detection accuracy using Silero VAD for natural turn-taking.",
-      "End-to-end TTS/STT pipeline with human-like responses under 1.2 seconds.",
+      "Designed and delivered scalable Python rule-automation services that validate complex system constraints, reducing manual verification and improving consistency across distributed environments.",
+      "Developed backend business logic in Python with domain-specific languages that enforce system invariants, lowering error rates by 30%.",
+      "Contributed to core C++ modules for structured data modeling and transformations, replacing deprecated APIs to improve performance, reliability and long-term stability.",
+      "Implemented policy-based access control for object and attribute-level permissions, shipping security updates through Git-driven CI/CD pipelines.",
     ],
-    stack: ["LiveKit", "GPT-4", "Deepgram", "Silero VAD"],
+    more: {
+      heading: "Before that, as an intern",
+      items: [
+        "Contributed to a real-time, low-latency, NLP-driven backend that executes structured commands from natural language input.",
+        "Designed the command-processing pipeline with modern NLP techniques, reaching 97%+ intent accuracy.",
+        "Integrated an EKL and Python-based API layer to execute system actions programmatically.",
+        "Optimized speech-to-text components, cutting response time by 30% and enabling concurrent command execution.",
+      ],
+    },
+    stack: ["Python", "C++", "DSLs", "EKL", "CI/CD", "Access control"],
   },
 ];
 
-export type Role = {
-  title: string;
-  company: string;
-  period: string;
-  bullets: string[];
-};
+export type Row = { name: string; meta: string; href?: string };
 
-export const experience: Role[] = [
+export const lists: { id?: string; title: string; rows: Row[] }[] = [
   {
-    title: "Software Engineer",
-    company: "Dassault Systèmes",
-    period: "Jun 2025 – Present",
-    bullets: [
-      "Designed and delivered scalable Python rule-automation services that validate complex system constraints across distributed environments.",
-      "Built backend business logic in Python with domain-specific languages enforcing system invariants, lowering error rates by 30%.",
-      "Contributed to core C++ modules for structured data modeling and transformations, replacing deprecated APIs to improve performance and reliability.",
-      "Implemented policy-based access control for object and attribute-level permissions, with security updates shipped through Git-driven CI/CD pipelines.",
+    id: "experience",
+    title: "Experience",
+    rows: [
+      { name: "Dassault Systèmes", meta: "Software Engineer · 2025", href: "https://www.3ds.com/" },
+      { name: "Dassault Systèmes", meta: "Software Engineer Intern · 2025", href: "https://www.3ds.com/" },
     ],
   },
   {
-    title: "Software Engineer Intern",
-    company: "Dassault Systèmes",
-    period: "Jan – Jun 2025",
-    bullets: [
-      "Contributed to a real-time, low-latency, NLP-driven backend enabling hands-free execution of structured commands from natural language.",
-      "Designed the command-processing pipeline with modern NLP techniques, reaching 97%+ intent accuracy.",
-      "Integrated an EKL and Python-based API layer to execute system actions programmatically.",
-      "Optimized speech-to-text components, cutting response time by 30% and enabling concurrent command execution.",
-    ],
-  },
-];
-
-export const skills: { group: string; items: string[] }[] = [
-  {
-    group: "Languages",
-    items: ["Python", "C++", "C", "Java", "Go"],
-  },
-  {
-    group: "Frontend",
-    items: ["React", "Next.js", "TypeScript", "HTML", "CSS", "Tailwind CSS", "Material UI"],
-  },
-  {
-    group: "Backend",
-    items: ["Django REST Framework", "REST APIs", "PostgreSQL", "MySQL"],
-  },
-  {
-    group: "Infrastructure & DevOps",
-    items: [
-      "Linux (Ubuntu)",
-      "Docker",
-      "Kubernetes",
-      "AWS",
-      "Git",
-      "Helm",
-      "Jenkins",
-      "Ansible",
-      "eksctl",
-      "Prometheus",
-      "Terraform",
+    title: "Education",
+    rows: [
+      { name: "NIT Rourkela", meta: "B.Tech · CGPA 8.22 · 2021–25", href: "https://nitrkl.ac.in/" },
+      { name: "Balaji Convent Jr College", meta: "Class XII · 90.62% · 2020" },
     ],
   },
   {
-    group: "Core",
-    items: [
-      "DBMS",
-      "OOPs",
-      "Computer Networks",
-      "Operating Systems",
-      "Distributed Systems",
-      "System Design",
+    title: "Recognition",
+    rows: [
+      { name: "NorCalHacks", meta: "Winner · 350 teams worldwide" },
+      { name: "MLH DragonHacks", meta: "Runner-up" },
+      { name: "LeetCode Weekly", meta: "Top 4.3% worldwide", href: "https://leetcode.com/u/ketanroy01/" },
     ],
   },
-];
-
-export const education = [
   {
-    school: "National Institute of Technology, Rourkela",
-    detail: "Bachelor of Technology (BTech)",
-    period: "2021 – 2025",
-    score: "CGPA 8.22",
+    title: "Toolbox",
+    rows: [
+      { name: "Languages", meta: "Python, C++, Go, Java, C" },
+      { name: "Backend", meta: "Django REST, PostgreSQL, MySQL" },
+      { name: "Infra", meta: "Kubernetes, Docker, AWS, Helm, Terraform, Jenkins" },
+      { name: "Frontend", meta: "React, Next.js, TypeScript, Tailwind" },
+    ],
   },
-  {
-    school: "Balaji Convent Jr College, Nagpur",
-    detail: "Class XII",
-    period: "2019 – 2020",
-    score: "90.62%",
-  },
-];
-
-export const achievements = [
-  "Won the NorCalHacks Hackathon (social good theme), competing against 350 teams worldwide.",
-  "Runner-Up at Major League Hacking (MLH) DragonHacks.",
-  "Ranked in the top 4.3% worldwide in LeetCode Weekly Contests.",
 ];
