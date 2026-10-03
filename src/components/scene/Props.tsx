@@ -10,9 +10,9 @@ const DARK = "#2b1d12";
 
 // Flat triangular sunray.
 const rayShape = new Shape();
-rayShape.moveTo(-0.2, 0);
-rayShape.lineTo(0.2, 0);
-rayShape.lineTo(0, 0.82);
+rayShape.moveTo(-0.17, 0);
+rayShape.lineTo(0.17, 0);
+rayShape.lineTo(0, 0.6);
 rayShape.closePath();
 
 // Open-smile mouth: a filled bottom semicircle.
@@ -29,20 +29,20 @@ export function Sun() {
   return (
     <Float speed={1.1} rotationIntensity={0.12} floatIntensity={0.45}>
       <group ref={rays} position={[0, 0, -0.2]}>
-        {Array.from({ length: 12 }, (_, i) => {
-          const a = (i / 12) * Math.PI * 2;
-          const len = i % 2 === 0 ? 1 : 0.78;
+        {Array.from({ length: 16 }, (_, i) => {
+          const a = (i / 16) * Math.PI * 2;
+          const len = i % 2 === 0 ? 1 : 0.82;
           return (
-            <mesh key={i} position={[Math.cos(a) * 1.42, Math.sin(a) * 1.42, 0]} rotation={[0, 0, a - Math.PI / 2]} scale={[1, len, 1]}>
+            <mesh key={i} position={[Math.cos(a) * 1.44, Math.sin(a) * 1.44, 0]} rotation={[0, 0, a - Math.PI / 2]} scale={[1, len, 1]}>
               <shapeGeometry args={[rayShape]} />
-              <Toon color="#f4c537" side={DoubleSide} />
+              <Toon color="#f3c63c" side={DoubleSide} />
             </mesh>
           );
         })}
       </group>
       <mesh>
         <sphereGeometry args={[1.46, 48, 48]} />
-        <Toon color="#f1d250" />
+        <Toon color="#f0d85e" />
         <Ink />
       </mesh>
       {[-1, 1].map((s) => (
@@ -119,58 +119,58 @@ export function Flower({ petal = "#a62c5f", phase = 0 }: { petal?: string; phase
   );
 }
 
-/** Floppy-eared dog mascot: orange body, one navy ear, one cream ear, one big eye. */
-export function Dog() {
-  const ref = useRef<Group>(null);
+const WING_ANGLES = [Math.PI * 0.72, Math.PI * 0.28, Math.PI * 1.16, Math.PI * 1.84];
+
+/** Dragonfly: slender body, big eyes and four large translucent teardrop wings. */
+export function Dragonfly({ body = "#2f3d74", wing = "#7bb0e4", flip = false }: { body?: string; wing?: string; flip?: boolean }) {
+  const root = useRef<Group>(null);
+  const wings = useRef<Group>(null);
   useFrame(({ clock }) => {
-    if (ref.current) {
-      const t = clock.elapsedTime;
-      ref.current.rotation.z = Math.sin(t * 0.8) * 0.05;
-      ref.current.position.y = Math.sin(t * 1.1) * 0.12;
+    const t = clock.elapsedTime;
+    if (root.current) {
+      root.current.position.y = Math.sin(t * 1.2) * 0.14;
+      root.current.rotation.z = (flip ? -1 : 1) * 0.2 + Math.sin(t * 0.7) * 0.07;
     }
+    if (wings.current) wings.current.rotation.x = Math.sin(t * 16) * 0.22;
   });
   return (
     <Float speed={1} rotationIntensity={0.1} floatIntensity={0.4}>
-      <group ref={ref}>
-        <mesh scale={[1, 1.08, 0.9]}>
-          <sphereGeometry args={[0.95, 40, 40]} />
-          <Toon color="#e2883a" />
-          <Ink />
+      <group ref={root}>
+        <mesh position={[0, -0.55, 0]}>
+          <capsuleGeometry args={[0.12, 1.3, 10, 18]} />
+          <Toon color={body} />
+          <Ink thickness={0.03} />
         </mesh>
-        <mesh position={[0.05, -0.32, 0.5]} scale={[0.78, 0.72, 0.5]}>
-          <sphereGeometry args={[0.62, 32, 32]} />
-          <Toon color="#f0b575" />
+        <mesh position={[0, 0.42, 0]}>
+          <sphereGeometry args={[0.28, 24, 24]} />
+          <Toon color={body} />
+          <Ink thickness={0.03} />
         </mesh>
-        <group position={[-0.82, 0.32, 0.08]} rotation={[0, 0, 0.55]}>
-          <mesh scale={[0.46, 0.98, 0.3]}>
-            <sphereGeometry args={[0.6, 28, 28]} />
-            <Toon color="#30407d" />
-            <Ink thickness={0.03} />
-          </mesh>
+        <mesh position={[0, 0.82, 0]}>
+          <sphereGeometry args={[0.24, 24, 24]} />
+          <Toon color={body} />
+          <Ink thickness={0.03} />
+        </mesh>
+        {[-1, 1].map((s) => (
+          <group key={s}>
+            <mesh position={[s * 0.15, 0.9, 0.15]}>
+              <sphereGeometry args={[0.11, 16, 16]} />
+              <meshBasicMaterial color="#ffffff" />
+            </mesh>
+            <mesh position={[s * 0.17, 0.89, 0.24]}>
+              <sphereGeometry args={[0.05, 12, 12]} />
+              <Toon color={DARK} />
+            </mesh>
+          </group>
+        ))}
+        <group ref={wings} position={[0, 0.45, 0.02]}>
+          {WING_ANGLES.map((ang, i) => (
+            <mesh key={i} position={[Math.cos(ang) * 0.6, Math.sin(ang) * 0.6, 0]} rotation={[0, 0, ang - Math.PI / 2]} scale={[0.3, 0.98, 0.04]}>
+              <sphereGeometry args={[0.62, 24, 24]} />
+              <meshBasicMaterial color={wing} transparent opacity={0.6} side={DoubleSide} />
+            </mesh>
+          ))}
         </group>
-        <group position={[0.92, 0.02, 0.08]} rotation={[0, 0, -1.02]}>
-          <mesh scale={[0.56, 1.4, 0.32]}>
-            <sphereGeometry args={[0.64, 28, 28]} />
-            <Toon color="#ecd0a4" />
-            <Ink thickness={0.03} />
-          </mesh>
-        </group>
-        <mesh position={[0.1, 0.08, 0.85]} scale={[1, 1.12, 1]}>
-          <sphereGeometry args={[0.18, 24, 24]} />
-          <meshBasicMaterial color="#ffffff" />
-        </mesh>
-        <mesh position={[0.13, 0.04, 1.0]}>
-          <sphereGeometry args={[0.095, 16, 16]} />
-          <Toon color={DARK} />
-        </mesh>
-        <mesh position={[0.16, 0.09, 1.07]}>
-          <sphereGeometry args={[0.032, 10, 10]} />
-          <meshBasicMaterial color="#ffffff" />
-        </mesh>
-        <mesh position={[-0.08, -0.42, 0.82]}>
-          <sphereGeometry args={[0.14, 20, 20]} />
-          <Toon color={DARK} />
-        </mesh>
       </group>
     </Float>
   );

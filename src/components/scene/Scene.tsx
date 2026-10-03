@@ -3,7 +3,7 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
 import type { Group } from "three";
-import { Dog, Flower, Monitor, Sun } from "./Props";
+import { Dragonfly, Flower, Monitor, Sun } from "./Props";
 
 /** Places the props around the viewport edges, drifts them up as the hero scrolls away, and parallaxes them toward the cursor. */
 function Layout() {
@@ -48,11 +48,14 @@ function Layout() {
       <group position={[-w / 2 + 1.3 * k, -h / 2 + 1.7 * k, 0]} scale={1.3 * k}>
         <Flower />
       </group>
-      <group position={[-w / 2 + 3.0 * k, -h / 2 + 0.7 * k, 0.3]} scale={0.9 * k}>
-        <Flower petal="#f08c1e" phase={1.7} />
+      <group position={[-w / 2 + 2.5 * k, -h / 2 + 3.0 * k, 0.4]} scale={1.0 * k}>
+        <Dragonfly body="#2f3d74" wing="#7bb0e4" />
       </group>
-      <group position={[w / 2 - 1.5 * k, -h / 2 + 2.3 * k, 0.5]} scale={1.15 * k}>
-        <Dog />
+      <group position={[w / 2 - 1.5 * k, -h / 2 + 1.6 * k, 0]} scale={1.2 * k}>
+        <Flower />
+      </group>
+      <group position={[w / 2 - 2.2 * k, -h / 2 + 3.0 * k, 0.4]} scale={1.0 * k}>
+        <Dragonfly body="#e08a38" wing="#ecd2a0" flip />
       </group>
     </group>
   );
