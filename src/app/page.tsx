@@ -1,8 +1,8 @@
 import Link from "next/link";
+import Cat from "@/components/Cat";
 import Keycap from "@/components/Keycap";
 import ProjectArt from "@/components/ProjectArt";
 import Reveal from "@/components/Reveal";
-import Sticker from "@/components/Sticker";
 import Tag, { type TagColor } from "@/components/Tag";
 import { lists, profile, socials, works } from "@/data/resume";
 
@@ -96,9 +96,18 @@ export default function Home() {
               </span>
             </span>
             . I build backend systems and obsess over{" "}
-            <Sticker />
+            <span className="relative inline-block h-[1em] w-[1.6em] translate-y-[0.12em] align-baseline">
+              <Cat className="absolute inset-0 h-full w-full" />
+            </span>
             <em className="font-medium italic">reliability</em>.
           </h1>
+          {/* Second, larger cat perched at the right edge above the grid (desktop only). */}
+          <div className="pointer-events-none absolute inset-x-0 top-0 hidden h-[143px] min-[601px]:block">
+            <Cat
+              start={1}
+              className="pointer-events-auto absolute -right-[5px] bottom-0 h-[102px] w-[128px]"
+            />
+          </div>
         </div>
 
         {/* Work */}

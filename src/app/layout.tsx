@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Figtree, Newsreader, Space_Mono } from "next/font/google";
+import CustomCursor from "@/components/CustomCursor";
 import "./globals.css";
 
 const figtree = Figtree({
@@ -40,7 +41,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${figtree.variable} ${newsreader.variable} ${spaceMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full bg-paper font-sans">{children}</body>
+      <body className="min-h-full bg-paper font-sans">
+        {children}
+        <CustomCursor />
+      </body>
     </html>
   );
 }
