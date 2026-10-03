@@ -3,7 +3,7 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
 import type { Group } from "three";
-import { Dragonfly, Flower, Monitor, Sun } from "./Props";
+import { Butterfly, Flower, Monitor, Sun } from "./Props";
 
 /** Places the props around the viewport edges, drifts them up as the hero scrolls away, and parallaxes them toward the cursor. */
 function Layout() {
@@ -11,6 +11,8 @@ function Layout() {
   const root = useRef<Group>(null);
   // Normalized pointer (-1..1). The canvas sits under pointer-events:none layers, so we track the window.
   const pointer = useRef({ x: 0, y: 0 });
+  // Click feedback: a pulse that spikes on press and decays, giving the props a little "pop".
+  const pop = useRef(0);
   const k = Math.min(1, w / 15);
 
   useEffect(() => {
@@ -18,8 +20,15 @@ function Layout() {
       pointer.current.x = (e.clientX / window.innerWidth) * 2 - 1;
       pointer.current.y = (e.clientY / window.innerHeight) * 2 - 1;
     };
+    const onDown = () => {
+      pop.current = 1;
+    };
     window.addEventListener("pointermove", onMove, { passive: true });
-    return () => window.removeEventListener("pointermove", onMove);
+    window.addEventListener("pointerdown", onDown, { passive: true });
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerdown", onDown);
+    };
   }, []);
 
   useFrame(() => {
@@ -35,6 +44,8 @@ function Layout() {
     g.position.y += (ty - g.position.y) * 0.05;
     g.rotation.y += (ry - g.rotation.y) * 0.05;
     g.rotation.x += (rx - g.rotation.x) * 0.05;
+    pop.current *= 0.86;
+    g.scale.setScalar(1 + pop.current * 0.05);
   });
 
   return (
@@ -48,14 +59,14 @@ function Layout() {
       <group position={[-w / 2 + 1.3 * k, -h / 2 + 1.7 * k, 0]} scale={1.3 * k}>
         <Flower />
       </group>
-      <group position={[-w / 2 + 2.5 * k, -h / 2 + 3.0 * k, 0.4]} scale={1.0 * k}>
-        <Dragonfly body="#2f3d74" wing="#7bb0e4" />
+      <group position={[-w / 2 + 2.4 * k, -h / 2 + 3.0 * k, 0.4]} scale={1.05 * k}>
+        <Butterfly wing="#7bb0e4" />
       </group>
       <group position={[w / 2 - 1.5 * k, -h / 2 + 1.6 * k, 0]} scale={1.2 * k}>
         <Flower />
       </group>
-      <group position={[w / 2 - 2.2 * k, -h / 2 + 3.0 * k, 0.4]} scale={1.0 * k}>
-        <Dragonfly body="#e08a38" wing="#ecd2a0" flip />
+      <group position={[w / 2 - 2.1 * k, -h / 2 + 3.0 * k, 0.4]} scale={1.05 * k}>
+        <Butterfly wing="#eaa23e" flip />
       </group>
     </group>
   );
