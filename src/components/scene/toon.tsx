@@ -1,7 +1,7 @@
 "use client";
 
 import { Outlines } from "@react-three/drei";
-import { DataTexture, NearestFilter, RedFormat } from "three";
+import { DataTexture, NearestFilter, RedFormat, type Side } from "three";
 
 const INK = "#3b2a1a";
 
@@ -19,7 +19,7 @@ function getGradient() {
   return cache.gradient;
 }
 
-export function Toon({ color, opacity }: { color: string; opacity?: number }) {
+export function Toon({ color, opacity, side }: { color: string; opacity?: number; side?: Side }) {
   const map = getGradient();
   return (
     <meshToonMaterial
@@ -27,6 +27,7 @@ export function Toon({ color, opacity }: { color: string; opacity?: number }) {
       gradientMap={map}
       transparent={opacity !== undefined}
       opacity={opacity ?? 1}
+      side={side}
     />
   );
 }
