@@ -1,255 +1,224 @@
-// Single source of truth for site content (all taken from the resume).
-// In bullet text, **double asterisks** mark the bold keywords.
+// Single source of truth for site content. Everything here comes from the resume
+// or from Ketan's public GitHub repos.
 
 export const profile = {
+  firstName: "Ketan",
   name: "Ketan Ratan Roy",
   initials: "KR",
-  tagline: "Backend engineer, focused on systems that stay up",
+  role: "Software Engineer",
   email: "ketanroy0866@gmail.com",
   resumeUrl: "/Ketan_Roy_Resume.pdf",
-  github: "roy-ketan",
-  // Drop a photo in /public and set this (e.g. "/me.jpg") to replace the initials avatar.
-  photo: null as string | null,
+  timezone: "Asia/Kolkata",
+  tzLabel: "IST",
+  leetcode: "ketanroy01",
+  bio: "I like building the parts of a system that have to hold up: backend services, data models and the pipelines around them. At Dassault Systèmes I write Python rule-automation services and work on core C++ modules, after an internship building a low-latency, NLP-driven backend that turns spoken commands into system actions. Outside work I build cloud-native and real-time AI projects, from an 8-microservice store on Amazon EKS to a voice agent that answers in under 1.2 seconds.",
 };
 
-export type IconName =
-  | "github"
-  | "linkedin"
-  | "leetcode"
-  | "codeforces"
-  | "mail"
-  | "resume"
-  | "briefcase"
-  | "code"
-  | "trophy"
-  | "medal"
-  | "award"
-  | "graduation"
-  | "school"
-  | "building";
-
-export const overview: { icon: IconName; before?: string; label: string; href: string; after?: string }[] = [
-  { icon: "briefcase", before: "Software Engineer", label: "@Dassault Systèmes", href: "https://www.3ds.com/" },
-  { icon: "code", before: "Ex-Intern", label: "@Dassault Systèmes", href: "https://www.3ds.com/" },
-  { icon: "trophy", before: "Winner", label: "@NorCalHacks", href: "https://norcalhacks.org/" },
-  { icon: "medal", before: "Runner-up", label: "@MLH DragonHacks", href: "https://mlh.io/" },
-  { icon: "leetcode", before: "Top 4.3%", label: "@LeetCode", href: "https://leetcode.com/u/ketanroy01/" },
-  { icon: "graduation", label: "NIT Rkl'25", href: "https://nitrkl.ac.in/" },
-];
-
-export const socials: { icon: IconName; label: string; href: string }[] = [
-  { icon: "github", label: "GitHub", href: "https://github.com/roy-ketan" },
-  { icon: "linkedin", label: "LinkedIn", href: "https://linkedin.com/in/ketan-roy/" },
-  { icon: "leetcode", label: "LeetCode", href: "https://leetcode.com/u/ketanroy01/" },
-  { icon: "codeforces", label: "Codeforces", href: "https://codeforces.com/profile/jets_psd" },
-  { icon: "mail", label: "Email", href: "mailto:ketanroy0866@gmail.com" },
-  { icon: "resume", label: "Resume", href: "/Ketan_Roy_Resume.pdf" },
-];
-
-export type Role = {
-  title: string;
-  type: string;
-  period: string;
-  icon: IconName;
-  bullets: string[];
-  skills: string[];
+export const links = {
+  github: "https://github.com/roy-ketan",
+  linkedin: "https://linkedin.com/in/ketan-roy/",
+  leetcode: "https://leetcode.com/u/ketanroy01/",
+  codeforces: "https://codeforces.com/profile/jets_psd",
 };
 
-export const experience: {
+export type Experience = {
   id: string;
+  emoji: string;
   company: string;
-  href: string;
-  current: boolean;
-  roles: Role[];
-}[] = [
-  {
-    id: "dassault-systemes",
-    company: "Dassault Systèmes",
-    href: "https://www.3ds.com/",
-    current: true,
-    roles: [
-      {
-        title: "Software Engineer",
-        type: "Full-time",
-        period: "Jun 2025 — Present",
-        icon: "code",
-        bullets: [
-          "Designed and delivered **scalable Python-based rule automation services** to validate complex system constraints, reducing manual verification effort and improving consistency across distributed environments.",
-          "Developed **backend business logic** in Python with domain-specific languages that enforce system invariants, improving validation correctness and lowering error rates by **30%**.",
-          "Contributed to **core C++ modules** for structured data modeling and transformations, upgrading legacy backend logic by replacing deprecated APIs for better performance, reliability and long-term stability.",
-          "Implemented policy-based **access control systems** for object and attribute-level permissions, integrating security updates into Git-driven **CI/CD pipelines** for consistent, version-controlled deployments.",
-        ],
-        skills: ["Python", "C++", "DSLs", "Access Control", "CI/CD", "Git"],
-      },
-      {
-        title: "Software Engineer Intern",
-        type: "Internship",
-        period: "Jan — Jun 2025",
-        icon: "briefcase",
-        bullets: [
-          "Contributed to a **real-time, low-latency, NLP-driven backend system** enabling hands-free execution of structured commands through natural language input.",
-          "Designed a **command-processing pipeline** using modern NLP techniques, achieving **97%+** intent accuracy.",
-          "Integrated an **EKL and Python-based API** layer to execute system actions programmatically, enabling automated backend workflows.",
-          "Optimized **speech-to-text** components to cut response time by **30%**, enabling low-latency, concurrent command execution.",
-        ],
-        skills: ["Python", "NLP", "EKL", "Speech-to-Text"],
-      },
-    ],
-  },
-];
-
-export const projects: {
-  id: string;
-  name: string;
-  subtitle: string;
-  date: string;
-  skills: string[];
+  title: string;
+  team: string;
+  period: string;
+  current?: boolean;
+  summary: string;
   bullets: string[];
-}[] = [
+  skills: string[];
+  illustration: "rules" | "voice";
+  tags: [string, string];
+};
+
+export const experience: Experience[] = [
   {
-    id: "cloudcart",
-    name: "CloudCart",
-    subtitle: "Cloud-native e-commerce on EKS",
-    date: "Mar 2025",
-    skills: ["Kubernetes", "Amazon EKS", "Docker", "Helm", "eksctl", "AWS"],
+    id: "dassault-swe",
+    emoji: "🧩",
+    company: "Dassault Systèmes",
+    title: "Software Engineer",
+    team: "Dassault Systèmes",
+    period: "Jun 2025 to Present",
+    current: true,
+    summary:
+      "Backend work in Python and C++: rule-automation services that validate complex system constraints, core data-modeling modules, and access control.",
     bullets: [
-      "Built and deployed a production-grade **3-tier** e-commerce platform with **8 microservices and 2 databases on Amazon EKS**, using Kubernetes for scalable orchestration.",
-      "Containerized and automated deployments with **Docker, Helm and eksctl**, streamlining infrastructure setup and **CI/CD workflows**.",
-      "Configured **AWS ECR, IAM OIDC and the ALB Ingress Controller** for secure image handling, high availability and zero-downtime updates.",
+      "Designed and delivered scalable Python-based rule automation services to validate complex system constraints, reducing manual verification effort and improving consistency across distributed environments.",
+      "Developed backend business logic in Python with domain-specific languages that enforce system invariants, improving validation correctness and lowering error rates by 30%.",
+      "Contributed to core C++ modules for structured data modeling and transformations, upgrading legacy backend logic by replacing deprecated APIs for better performance, reliability and long-term stability.",
+      "Implemented policy-based access control for object and attribute-level permissions, and integrated security updates into Git-driven CI/CD pipelines for consistent, version-controlled deployments.",
     ],
+    skills: ["Python", "C++", "DSLs", "Access Control", "CI/CD", "Git"],
+    illustration: "rules",
+    tags: ["⚙️ RULE AUTOMATION · PYTHON", "BACKEND"],
   },
   {
-    id: "studylink",
-    name: "StudyLink",
-    subtitle: "Interactive student collaboration platform",
-    date: "Oct 2024",
-    skills: ["Django", "OpenCV", "MediaPipe", "Python"],
+    id: "dassault-intern",
+    emoji: "🎙️",
+    company: "Dassault Systèmes",
+    title: "Software Engineer Intern",
+    team: "Dassault Systèmes",
+    period: "Jan 2025 to Jun 2025",
+    summary:
+      "A real-time, low-latency backend for hands-free work: natural language in, structured system actions out.",
     bullets: [
-      "Led the design and deployment of StudyLink, letting students form **study groups** of up to **50** members, post academic questions and exchange **video solutions**.",
-      "Developed a real-time drawing tool using **OpenCV and MediaPipe** for **hand gesture** recognition.",
-      "Integrated the **Air Canvas** feature into a **Django app** for hands-free interaction on the platform.",
+      "Contributed to a real-time, low-latency, NLP-driven backend system that enabled hands-free execution of structured commands through natural language input.",
+      "Designed a command-processing pipeline using modern NLP techniques, achieving 97%+ intent accuracy.",
+      "Integrated an EKL and Python-based API layer to execute system actions programmatically, enabling automated backend workflows.",
+      "Optimized speech-to-text components to reduce response time by 30%, enabling low-latency, concurrent command execution.",
     ],
-  },
-  {
-    id: "drivecall-ai",
-    name: "DriveCall AI",
-    subtitle: "AI voice agent for automotive call centers",
-    date: "Mar 2024",
-    skills: ["LiveKit", "OpenAI GPT-4", "Deepgram", "Silero VAD", "Python"],
-    bullets: [
-      "Built a real-time AI voice agent handling **20+ concurrent sessions** using **LiveKit, OpenAI GPT-4 and Deepgram STT**.",
-      "Achieved **95%+ speech detection accuracy** with Silero VAD, supporting natural turn-taking and fewer interruptions.",
-      "Implemented end-to-end TTS and STT pipelines with OpenAI and Deepgram, producing human-like responses with **latency under 1.2 seconds**.",
-    ],
+    skills: ["Python", "NLP", "EKL", "Speech-to-Text"],
+    illustration: "voice",
+    tags: ["🎙️ VOICE → INTENT → ACTION", "NLP"],
   },
 ];
 
-// `icon` is a simple-icons slug key (see components/Icons.tsx); omit for concept-only chips.
-export const stack: { id: string; group: string; items: { name: string; icon?: string; href?: string }[] }[] = [
+export const skills: { emoji: string; title: string; items: string[] }[] = [
+  { emoji: "⚡", title: "Languages", items: ["Python", "C++", "C", "Java", "Go"] },
   {
-    id: "languages",
-    group: "Languages",
-    items: [
-      { name: "Python", icon: "python", href: "https://www.python.org" },
-      { name: "C++", icon: "cplusplus", href: "https://isocpp.org" },
-      { name: "C", icon: "c" },
-      { name: "Java", icon: "openjdk", href: "https://openjdk.org" },
-      { name: "Go", icon: "go", href: "https://go.dev" },
-    ],
+    emoji: "🎨",
+    title: "Frontend",
+    items: ["React", "Next.js", "TypeScript", "HTML", "CSS", "Tailwind CSS", "Material UI"],
   },
   {
-    id: "frontend",
-    group: "Frontend",
-    items: [
-      { name: "React", icon: "react", href: "https://react.dev" },
-      { name: "Next.js", icon: "nextdotjs", href: "https://nextjs.org" },
-      { name: "TypeScript", icon: "typescript", href: "https://www.typescriptlang.org" },
-      { name: "HTML", icon: "html5" },
-      { name: "CSS", icon: "css" },
-      { name: "Tailwind CSS", icon: "tailwindcss", href: "https://tailwindcss.com" },
-      { name: "Material UI", icon: "mui", href: "https://mui.com" },
-    ],
+    emoji: "🧩",
+    title: "Backend & Data",
+    items: ["Django REST Framework", "REST APIs", "PostgreSQL", "MySQL"],
   },
   {
-    id: "backend",
-    group: "Backend",
-    items: [
-      { name: "Django REST", icon: "django", href: "https://www.django-rest-framework.org" },
-      { name: "REST APIs" },
-      { name: "PostgreSQL", icon: "postgresql", href: "https://www.postgresql.org" },
-      { name: "MySQL", icon: "mysql", href: "https://www.mysql.com" },
-    ],
+    emoji: "☁️",
+    title: "Infra & DevOps",
+    items: ["Linux", "Docker", "Kubernetes", "AWS", "Git", "Helm", "Jenkins", "Ansible", "eksctl", "Prometheus", "Terraform"],
   },
   {
-    id: "devops",
-    group: "Infra & DevOps",
-    items: [
-      { name: "Linux", icon: "ubuntu" },
-      { name: "Docker", icon: "docker", href: "https://www.docker.com" },
-      { name: "Kubernetes", icon: "kubernetes", href: "https://kubernetes.io" },
-      { name: "AWS", icon: "cloud", href: "https://aws.amazon.com" },
-      { name: "Git", icon: "git", href: "https://git-scm.com" },
-      { name: "Helm", icon: "helm", href: "https://helm.sh" },
-      { name: "Jenkins", icon: "jenkins", href: "https://www.jenkins.io" },
-      { name: "Ansible", icon: "ansible", href: "https://www.ansible.com" },
-      { name: "Prometheus", icon: "prometheus", href: "https://prometheus.io" },
-      { name: "Terraform", icon: "terraform", href: "https://www.terraform.io" },
-    ],
+    emoji: "🧠",
+    title: "Core CS",
+    items: ["DBMS", "OOP", "Computer Networks", "Operating Systems", "Distributed Systems", "System Design"],
+  },
+];
+
+export type Project = {
+  emoji: string;
+  title: string;
+  date: string;
+  description: string;
+  tags: string[];
+  href: string;
+};
+
+export const projects: Project[] = [
+  {
+    emoji: "🛒",
+    title: "CloudCart",
+    date: "Mar 2025",
+    description:
+      "Production-grade 3-tier e-commerce platform: 8 microservices and 2 databases on Amazon EKS, deployed with Docker, Helm and eksctl behind an ALB Ingress for zero-downtime updates.",
+    tags: ["Kubernetes", "AWS EKS", "Helm", "Docker"],
+    href: "https://github.com/roy-ketan/cloud-Native-ECommerce",
   },
   {
-    id: "core",
-    group: "Core",
-    items: [
-      { name: "DBMS" },
-      { name: "OOP" },
-      { name: "Computer Networks" },
-      { name: "Operating Systems" },
-      { name: "Distributed Systems" },
-      { name: "System Design" },
-    ],
+    emoji: "📞",
+    title: "DriveCall AI",
+    date: "Mar 2024",
+    description:
+      "Real-time AI voice agent for automotive call centers. Handles 20+ concurrent sessions with LiveKit, GPT-4 and Deepgram, with 95%+ speech detection and replies under 1.2 seconds.",
+    tags: ["Python", "LiveKit", "GPT-4", "Deepgram"],
+    href: "https://github.com/roy-ketan/DriveCall-AI",
+  },
+  {
+    emoji: "✍️",
+    title: "StudyLink",
+    date: "Oct 2024",
+    description:
+      "Student collaboration platform with study groups of up to 50, Q&A and video solutions, plus an Air Canvas you draw on with hand gestures (OpenCV + MediaPipe).",
+    tags: ["Django", "OpenCV", "MediaPipe"],
+    href: "https://github.com/roy-ketan/StudyLink",
+  },
+  {
+    emoji: "📄",
+    title: "CareerFit",
+    date: "Oct 2024",
+    description:
+      "Resume screening app: upload a resume and a TF-IDF + scikit-learn classifier predicts the job category it fits. Built with Streamlit and NLTK.",
+    tags: ["Python", "scikit-learn", "Streamlit", "NLP"],
+    href: "https://github.com/roy-ketan/careerfit",
+  },
+  {
+    emoji: "🖼️",
+    title: "PromptPic",
+    date: "Sep 2024",
+    description:
+      "Flask web app that turns a text prompt into a set of images using the OpenAI Images API.",
+    tags: ["Python", "Flask", "OpenAI"],
+    href: "https://github.com/roy-ketan/PromptPic",
+  },
+  {
+    emoji: "📅",
+    title: "Events Project",
+    date: "Sep 2024",
+    description:
+      "Full-stack app to create, view, edit and delete events on a personal calendar. Django REST backend with a React (Vite) frontend and protected routes.",
+    tags: ["Django REST", "React", "Vite"],
+    href: "https://github.com/roy-ketan/Events_project",
+  },
+  {
+    emoji: "📝",
+    title: "BlogXPress",
+    date: "Nov 2023",
+    description:
+      "Django blog with authentication, draft and published posts, and comments.",
+    tags: ["Python", "Django"],
+    href: "https://github.com/roy-ketan/Blog-Project",
+  },
+  {
+    emoji: "🗺️",
+    title: "TourismPlanner",
+    date: "Jul 2024",
+    description: "React app for browsing Indian tour destinations with descriptions and prices.",
+    tags: ["React", "JavaScript"],
+    href: "https://github.com/roy-ketan/TourismPlanner",
   },
 ];
 
 export const education = [
   {
-    id: "nit-rourkela",
-    school: "National Institute of Technology, Rourkela",
-    href: "https://nitrkl.ac.in/",
-    icon: "graduation" as IconName,
-    period: ["2021", "2025"],
+    emoji: "🎓",
+    label: "NIT ROURKELA",
     degree: "B.Tech",
-    score: "CGPA 8.22",
-    skills: ["C++", "Python", "DBMS", "Operating Systems", "Computer Networks"],
+    school: "National Institute of Technology, Rourkela",
+    period: "2021 to 2025",
+    description:
+      "Graduated with a CGPA of 8.22. Where the fundamentals came from: DBMS, OOP, operating systems, computer networks and distributed systems.",
   },
   {
-    id: "balaji-convent",
+    emoji: "📘",
+    label: "CLASS XII",
+    degree: "Higher Secondary (Class XII)",
     school: "Balaji Convent Jr College, Nagpur",
-    icon: "school" as IconName,
-    period: ["2019", "2020"],
-    degree: "Class XII",
-    score: "90.62%",
-    skills: [] as string[],
+    period: "2019 to 2020",
+    description: "Finished Class XII with 90.62%.",
   },
 ];
 
-export const awards: { title: string; prize: string; category: string; icon: IconName; href?: string }[] = [
+export const achievements = [
   {
-    title: "NorCalHacks Hackathon",
-    prize: "Winner — 350 teams worldwide",
-    category: "Hackathon · Social good",
-    icon: "trophy",
+    emoji: "🏆",
+    title: "NorCalHacks · Winner",
+    description: "Won the NorCalHacks hackathon, themed around social good, against 350 teams worldwide.",
   },
   {
-    title: "DragonHacks — Major League Hacking",
-    prize: "Runner Up",
-    category: "Hackathon",
-    icon: "medal",
+    emoji: "🥈",
+    title: "MLH DragonHacks · Runner-Up",
+    description: "Runner-up at DragonHacks, a Major League Hacking hackathon.",
   },
   {
-    title: "LeetCode Weekly Contest",
-    prize: "Top 4.3% worldwide",
-    category: "Competitive Programming",
-    icon: "award",
-    href: "https://leetcode.com/u/ketanroy01/",
+    emoji: "⚡",
+    title: "LeetCode · Top 4.3%",
+    description: "Placed in the top 4.3% worldwide in the LeetCode Weekly Contest.",
   },
 ];

@@ -1,28 +1,26 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Space_Mono } from "next/font/google";
-import CustomCursor from "@/components/CustomCursor";
+import { Fredoka, JetBrains_Mono, Nunito } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const fredoka = Fredoka({
+  variable: "--font-fredoka",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+});
+
+const nunito = Nunito({
+  variable: "--font-nunito",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrains = JetBrains_Mono({
+  variable: "--font-jetbrains",
   subsets: ["latin"],
 });
 
-// Only used by the sticker-style nav tags.
-const spaceMono = Space_Mono({
-  variable: "--font-space-mono",
-  subsets: ["latin"],
-  weight: ["400", "700"],
-});
-
-const title = "Ketan Ratan Roy — Software Engineer";
+const title = "Ketan Ratan Roy · Software Engineer · Dassault Systèmes";
 const description =
-  "Software engineer at Dassault Systèmes building backend systems in Python and C++, cloud-native infrastructure and real-time AI.";
+  "Software engineer at Dassault Systèmes building backend systems in Python and C++, cloud-native infrastructure and real-time voice AI.";
 
 export const metadata: Metadata = {
   title,
@@ -32,19 +30,16 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#e8d9bb",
+  themeColor: "#c6ebfd",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${spaceMono.variable} h-full antialiased`}
+      className={`${fredoka.variable} ${nunito.variable} ${jetbrains.variable} antialiased`}
     >
-      <body className="min-h-full bg-paper font-sans">
-        {children}
-        <CustomCursor />
-      </body>
+      <body className="min-h-screen font-sans">{children}</body>
     </html>
   );
 }
