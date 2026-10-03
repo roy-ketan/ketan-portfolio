@@ -47,6 +47,7 @@ export async function getLeetCodeStats(username: string): Promise<LeetCodeStats 
       },
       body: JSON.stringify({ query: QUERY, variables: { u: username } }),
       next: { revalidate: 86400 },
+      signal: AbortSignal.timeout(8000),
     });
     if (!res.ok) return null;
     const json = await res.json();
