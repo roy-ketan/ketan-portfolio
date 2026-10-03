@@ -19,6 +19,7 @@ function WorkCard({ w }: { w: (typeof works)[number] }) {
     <Reveal>
       <Link
         href={`/case/${w.slug}`}
+        data-cursor="paw"
         aria-label={`View ${w.title}`}
         className="group block rounded-sm outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#111]"
       >
@@ -96,17 +97,14 @@ export default function Home() {
               </span>
             </span>
             . I build backend systems and obsess over{" "}
-            <span className="relative inline-block h-[1em] w-[1.6em] translate-y-[0.12em] align-baseline">
+            <span className="relative mr-2 hidden h-[1em] w-[1.6em] align-[-0.1em] max-[600px]:inline-block">
               <Cat className="absolute inset-0 h-full w-full" />
             </span>
             <em className="font-medium italic">reliability</em>.
           </h1>
           {/* Second, larger cat perched at the right edge above the grid (desktop only). */}
           <div className="pointer-events-none absolute inset-x-0 top-0 hidden h-[143px] min-[601px]:block">
-            <Cat
-              start={1}
-              className="pointer-events-auto absolute -right-[5px] bottom-0 h-[102px] w-[128px]"
-            />
+            <Cat className="pointer-events-auto absolute -right-[5px] bottom-0 h-[102.6px] w-[127.8px]" />
           </div>
         </div>
 

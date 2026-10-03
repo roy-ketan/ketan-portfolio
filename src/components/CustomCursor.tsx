@@ -2,86 +2,158 @@
 
 import { useEffect, useRef } from "react";
 
-const INTERACTIVE = "a, button, summary, [role='button'], input, select, textarea, label";
+// Hotspot of the arrow tip inside the 36x37 box.
+const HOT_X = 5.5;
+const HOT_Y = 4.2;
+
+const ARROW =
+  "M5.5 4.2 L5.5 27.5 Q5.5 29 6.8 28 L11.4 23.6 L15.2 32.2 Q15.8 33.4 17 32.9 L19.6 31.7 Q20.8 31.1 20.3 29.9 L16.6 21.6 L23.3 21.2 Q25 21 23.7 19.8 L7.2 4.3 Q5.5 2.9 5.5 4.2 Z";
+// Paw pad: the arrow morphs into this over elements marked data-cursor="paw".
+const PAW =
+  "M 11.0 5.6 C 4.9 5.6 0.2 11.4 2.4 17.1 C 4.1 21.6 8.2 20.8 11.0 20.8 C 13.8 20.8 17.9 21.6 19.6 17.1 C 21.8 11.4 17.1 5.6 11.0 5.6 Z";
 
 /**
- * Soft-following arrow cursor. On click it bursts five lavender rays; over
- * links and buttons it turns into a paw. Only on devices with a fine pointer,
- * and the native cursor is restored if anything goes wrong.
+ * Pointer-following arrow. Clicking bursts five lavender rays with a springy
+ * squish; over elements marked `data-cursor="paw"` it becomes a paw instead.
+ * Only active for real mouse pointers, and the native cursor is hidden only
+ * once this one is actually tracking, so the cursor can never vanish.
  */
 export default function CustomCursor() {
   const wrap = useRef<HTMLDivElement>(null);
-  const inner = useRef<HTMLDivElement>(null);
+  const body = useRef<HTMLDivElement>(null);
+  const arrow = useRef<SVGPathElement>(null);
+  const toes = useRef<SVGGElement>(null);
   const rays = useRef<SVGGElement>(null);
 
   useEffect(() => {
-    if (!window.matchMedia("(pointer: fine)").matches) return;
     const el = wrap.current;
-    const body = inner.current;
-    if (!el || !body) return;
+    const bodyEl = body.current;
+    const arrowEl = arrow.current;
+    const toesEl = toes.current;
+    const raysEl = rays.current;
+    if (!el || !bodyEl || !arrowEl || !toesEl || !raysEl) return;
+    if (!window.matchMedia("(pointer: fine)").matches) return;
 
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
     const root = document.documentElement;
-    let tx = -100;
-    let ty = -100;
-    let x = tx;
-    let y = ty;
-    let raf = 0;
-    let seen = false;
+    const canMorph = CSS.supports("d", `path("${ARROW}")`);
+    const rayEls = Array.from(raysEl.querySelectorAll<SVGPathElement>("[data-ray]"));
 
-    const frame = () => {
-      x += (tx - x) * (reduce ? 1 : 0.35);
-      y += (ty - y) * (reduce ? 1 : 0.35);
-      el.style.transform = `translate3d(${x - 5}px, ${y - 4}px, 0)`;
-      raf = requestAnimationFrame(frame);
+    let px = 0;
+    let py = 0;
+    let visible = false;
+    let isPaw = false;
+    let last: EventTarget | null = null;
+    let scrollRaf = 0;
+    let anims: Animation[] = [];
+
+    const setD = (d: string) => {
+      if (canMorph) arrowEl.style.setProperty("d", `path("${d}")`);
+      else arrowEl.setAttribute("d", d);
     };
 
-    const onMove = (e: PointerEvent) => {
-      tx = e.clientX;
-      ty = e.clientY;
-      if (!seen) {
-        seen = true;
-        x = tx;
-        y = ty;
+    const setPaw = (target: EventTarget | null) => {
+      last = target;
+      const next = !!(target instanceof Element && target.closest('[data-cursor="paw"]'));
+      if (next === isPaw) return;
+      isPaw = next;
+      el.dataset.paw = String(next);
+      setD(next ? PAW : ARROW);
+    };
+
+    const move = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") return;
+      px = e.clientX;
+      py = e.clientY;
+      if (!visible) {
+        visible = true;
         el.style.opacity = "1";
         root.classList.add("custom-cursor");
       }
-      const target = e.target as Element | null;
-      el.dataset.paw = String(!!target?.closest?.(INTERACTIVE));
-    };
-    const onLeave = () => {
-      el.style.opacity = "0";
-    };
-    const onEnter = () => {
-      if (seen) el.style.opacity = "1";
-    };
-    const onDown = () => {
-      body.style.transform = "scale(0.86)";
-      const g = rays.current;
-      if (g && !reduce) {
-        g.classList.remove("cursor-burst");
-        void g.getBoundingClientRect();
-        g.classList.add("cursor-burst");
-      }
-    };
-    const onUp = () => {
-      body.style.transform = "";
+      if (e.target !== last) setPaw(e.target);
+      el.style.transform = `translate3d(${px - HOT_X}px, ${py - HOT_Y}px, 0)`;
     };
 
-    raf = requestAnimationFrame(frame);
-    window.addEventListener("pointermove", onMove, { passive: true });
-    window.addEventListener("pointerdown", onDown, { passive: true });
-    window.addEventListener("pointerup", onUp, { passive: true });
-    document.documentElement.addEventListener("pointerleave", onLeave);
-    document.documentElement.addEventListener("pointerenter", onEnter);
+    const down = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") return;
+      move(e);
+      anims.forEach((a) => a.cancel());
+      anims = [];
+      rayEls.forEach((r) => {
+        r.style.opacity = "0";
+      });
+      if (reduce.matches) return;
+
+      if (isPaw) {
+        // Paw: a quick squish, no rays.
+        const opts = { duration: 180, easing: "cubic-bezier(0.2, 0, 0.2, 1)" };
+        anims = [
+          toesEl.animate(
+            [{ transform: "scale(1)" }, { transform: "scale(0.88, 0.82)", offset: 0.35 }, { transform: "scale(1)" }],
+            opts,
+          ),
+          arrowEl.animate(
+            [{ transform: "scale(1)" }, { transform: "scale(0.96, 0.94)", offset: 0.35 }, { transform: "scale(1)" }],
+            opts,
+          ),
+        ];
+        return;
+      }
+
+      // Arrow: spring-like pulse plus five rays drawing out and fading.
+      anims = [
+        bodyEl.animate(
+          [
+            { transform: "scale(1)" },
+            { transform: "scale(0.84)", offset: 0.22 },
+            { transform: "scale(1.04)", offset: 0.6 },
+            { transform: "scale(1)" },
+          ],
+          { duration: 300, easing: "ease-out" },
+        ),
+        ...rayEls.map((r) =>
+          r.animate(
+            [
+              { opacity: 1, strokeDasharray: "0 1", strokeDashoffset: "0", easing: "cubic-bezier(0.16, 1, 0.3, 1)" },
+              { opacity: 1, strokeDasharray: "1 1", strokeDashoffset: "0", offset: 0.44 },
+              { opacity: 1, strokeDasharray: "1 1", strokeDashoffset: "0", offset: 0.54, easing: "cubic-bezier(0.4, 0, 1, 1)" },
+              { opacity: 1, strokeDasharray: "0 1", strokeDashoffset: "-1" },
+            ],
+            { duration: 280 },
+          ),
+        ),
+      ];
+    };
+
+    const hide = () => {
+      visible = false;
+      last = null;
+      el.style.opacity = "0";
+    };
+
+    // Re-evaluate what is under a stationary pointer after the page scrolls.
+    const onScroll = () => {
+      if (!visible || scrollRaf) return;
+      scrollRaf = requestAnimationFrame(() => {
+        scrollRaf = 0;
+        setPaw(document.elementFromPoint(px, py));
+      });
+    };
+
+    window.addEventListener("pointermove", move, { capture: true, passive: true });
+    window.addEventListener("pointerdown", down, { capture: true, passive: true });
+    window.addEventListener("scroll", onScroll, { capture: true, passive: true });
+    window.addEventListener("blur", hide);
+    root.addEventListener("mouseleave", hide);
     return () => {
-      cancelAnimationFrame(raf);
+      window.removeEventListener("pointermove", move, true);
+      window.removeEventListener("pointerdown", down, true);
+      window.removeEventListener("scroll", onScroll, true);
+      window.removeEventListener("blur", hide);
+      root.removeEventListener("mouseleave", hide);
+      cancelAnimationFrame(scrollRaf);
+      anims.forEach((a) => a.cancel());
       root.classList.remove("custom-cursor");
-      window.removeEventListener("pointermove", onMove);
-      window.removeEventListener("pointerdown", onDown);
-      window.removeEventListener("pointerup", onUp);
-      document.documentElement.removeEventListener("pointerleave", onLeave);
-      document.documentElement.removeEventListener("pointerenter", onEnter);
     };
   }, []);
 
@@ -91,39 +163,37 @@ export default function CustomCursor() {
       aria-hidden
       data-paw="false"
       className="group/cursor pointer-events-none fixed left-0 top-0 z-[2147483647] hidden h-[37px] w-[36px] opacity-0 will-change-transform [@media(pointer:fine)]:block"
-      style={{ transition: "opacity 150ms" }}
     >
-      <div
-        ref={inner}
-        className="h-full w-full transition-transform duration-100 ease-out"
-        style={{ transformOrigin: "5px 4px" }}
-      >
+      <div ref={body} className="h-full w-full" style={{ transformOrigin: `${HOT_X}px ${HOT_Y}px` }}>
         <svg viewBox="0 0 36 37" className="block h-full w-full overflow-visible" shapeRendering="geometricPrecision">
           <defs>
-            <filter id="cursor-shadow" x="-4" y="-2" width="50" height="50" filterUnits="userSpaceOnUse">
+            <filter id="cursor-shadow" x="-6" y="-8" width="52" height="56" filterUnits="userSpaceOnUse">
               <feDropShadow dx="0" dy="1.6" stdDeviation="2.4" floodOpacity="0.22" />
             </filter>
           </defs>
           <g filter="url(#cursor-shadow)">
             <path
-              d="M5.5 4.2 L5.5 27.5 Q5.5 29 6.8 28 L11.4 23.6 L15.2 32.2 Q15.8 33.4 17 32.9 L19.6 31.7 Q20.8 31.1 20.3 29.9 L16.6 21.6 L23.3 21.2 Q25 21 23.7 19.8 L7.2 4.3 Q5.5 2.9 5.5 4.2 Z"
+              ref={arrow}
+              d={ARROW}
               fill="#060606"
+              stroke="#fff"
               strokeWidth="1.9"
               strokeLinejoin="round"
-              className="stroke-white transition-[stroke] duration-150 group-data-[paw=true]/cursor:stroke-[#C8B5E9]"
+              style={{ transformOrigin: "11px 14px" }}
+              className="transition-[stroke] duration-150 ease-out group-data-[paw=true]/cursor:stroke-[#C8B5E9] [@supports(d:path('M0 0'))]:transition-[d,stroke]"
             />
             <g
-              className="opacity-0 transition-opacity duration-100 group-data-[paw=true]/cursor:opacity-100"
+              ref={toes}
               fill="#060606"
               stroke="#C8B5E9"
-              strokeWidth="1.5"
-              transform="translate(9 8) scale(0.34)"
+              strokeWidth="1.6"
+              style={{ transformOrigin: "11px 14px" }}
+              className="opacity-0 transition-opacity duration-100 ease-out group-data-[paw=true]/cursor:opacity-100"
             >
-              <ellipse cx="16" cy="28" rx="5" ry="7" transform="rotate(-20 16 28)" />
-              <ellipse cx="26" cy="20" rx="5" ry="7" transform="rotate(-8 26 20)" />
-              <ellipse cx="38" cy="20" rx="5" ry="7" transform="rotate(8 38 20)" />
-              <ellipse cx="48" cy="28" rx="5" ry="7" transform="rotate(20 48 28)" />
-              <path d="M32 33 C22 33 16 42 20 48 C24 53 28 51 32 51 C36 51 40 53 44 48 C48 42 42 33 32 33 Z" />
+              <ellipse cx="2.4" cy="8.7" rx="2.8" ry="3.9" transform="rotate(-20 2.4 8.7)" />
+              <ellipse cx="7.5" cy="2.5" rx="2.8" ry="3.9" transform="rotate(-8 7.5 2.5)" />
+              <ellipse cx="14.5" cy="2.5" rx="2.8" ry="3.9" transform="rotate(8 14.5 2.5)" />
+              <ellipse cx="19.6" cy="8.7" rx="2.8" ry="3.9" transform="rotate(20 19.6 8.7)" />
             </g>
           </g>
           <g
@@ -134,11 +204,11 @@ export default function CustomCursor() {
             fill="none"
             className="group-data-[paw=true]/cursor:opacity-0"
           >
-            <path className="cursor-ray" pathLength="1" d="M5.5 -1 V-7" />
-            <path className="cursor-ray" pathLength="1" d="M0.5 0.5 L-4 -4" />
-            <path className="cursor-ray" pathLength="1" d="M10.5 0.5 L15 -4" />
-            <path className="cursor-ray" pathLength="1" d="M-1 5 H-7" />
-            <path className="cursor-ray" pathLength="1" d="M0.5 9.5 L-4 14" />
+            <path data-ray pathLength="1" opacity="0" strokeDasharray="0 1" d="M5.5 -0.6 V-7" />
+            <path data-ray pathLength="1" opacity="0" strokeDasharray="0 1" d="M0.8 0.8 L-3.8 -3.8" />
+            <path data-ray pathLength="1" opacity="0" strokeDasharray="0 1" d="M10.4 0.8 L15 -3.8" />
+            <path data-ray pathLength="1" opacity="0" strokeDasharray="0 1" d="M-1.2 5.4 H-7.4" />
+            <path data-ray pathLength="1" opacity="0" strokeDasharray="0 1" d="M0.8 10 L-3.8 14.6" />
           </g>
         </svg>
       </div>
