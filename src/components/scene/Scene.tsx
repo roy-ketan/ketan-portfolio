@@ -56,14 +56,14 @@ function Layout() {
       <group position={[-w / 2 + 1.3 * k, -h / 2 + 1.7 * k, 0]} scale={1.3 * k}>
         <Flower />
       </group>
-      <group position={[-w / 2 + 2.4 * k, -h / 2 + 3.0 * k, 0.4]} scale={1.05 * k}>
-        <Butterfly wing="#7bb0e4" />
+      <group position={[-w / 2 + 2.4 * k, -h / 2 + 3.0 * k, 0.4]} scale={1.2 * k}>
+        <Butterfly wing="#9fc9ec" />
       </group>
       <group position={[w / 2 - 1.5 * k, -h / 2 + 1.6 * k, 0]} scale={1.2 * k}>
         <Flower />
       </group>
-      <group position={[w / 2 - 2.1 * k, -h / 2 + 3.0 * k, 0.4]} scale={1.05 * k}>
-        <Butterfly wing="#eaa23e" flip />
+      <group position={[w / 2 - 2.1 * k, -h / 2 + 3.0 * k, 0.4]} scale={1.2 * k}>
+        <Butterfly wing="#f0b85a" flip />
       </group>
     </group>
   );

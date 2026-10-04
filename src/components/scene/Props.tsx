@@ -35,13 +35,23 @@ export function Sun() {
   return (
     <Float speed={1.1} rotationIntensity={0.12} floatIntensity={0.45}>
       <group ref={rays} position={[0, 0, -0.2]}>
+        {/* Outer orange layer, offset to sit between the yellow rays for a two-tone look. */}
+        {Array.from({ length: 14 }, (_, i) => {
+          const a = ((i + 0.5) / 14) * Math.PI * 2;
+          return (
+            <mesh key={`o${i}`} position={[Math.cos(a) * 1.5, Math.sin(a) * 1.5, -0.02]} rotation={[0, 0, a - Math.PI / 2]} scale={[0.95, 1.14, 1]}>
+              <shapeGeometry args={[rayShape]} />
+              <Toon color="#ef9a1f" side={DoubleSide} />
+            </mesh>
+          );
+        })}
         {Array.from({ length: 14 }, (_, i) => {
           const a = (i / 14) * Math.PI * 2;
-          const len = i % 2 === 0 ? 1 : 0.84;
+          const len = i % 2 === 0 ? 1 : 0.86;
           return (
-            <mesh key={i} position={[Math.cos(a) * 1.44, Math.sin(a) * 1.44, 0]} rotation={[0, 0, a - Math.PI / 2]} scale={[1, len, 1]}>
+            <mesh key={`y${i}`} position={[Math.cos(a) * 1.44, Math.sin(a) * 1.44, 0]} rotation={[0, 0, a - Math.PI / 2]} scale={[1, len, 1]}>
               <shapeGeometry args={[rayShape]} />
-              <Toon color="#f3c63c" side={DoubleSide} />
+              <Toon color="#f7ca40" side={DoubleSide} />
             </mesh>
           );
         })}
@@ -134,9 +144,9 @@ const WINGS = [
 ];
 
 /** Butterfly: slender dark body, antennae and four outlined translucent wings with eyespots. */
-export function Butterfly({ body = DARK, wing = "#7bb0e4", flip = false }: { body?: string; wing?: string; flip?: boolean }) {
+export function Butterfly({ body = DARK, wing = "#9fc9ec", flip = false }: { body?: string; wing?: string; flip?: boolean }) {
   const root = useRef<Group>(null);
-  const wings = useRef<Group>(null);
+  const wingRefs = useRef<(Group | null)[]>([]);
   const ph = flip ? 1.7 : 0;
   useFrame(({ clock }) => {
     const t = clock.elapsedTime + ph;
@@ -145,8 +155,12 @@ export function Butterfly({ body = DARK, wing = "#7bb0e4", flip = false }: { bod
       root.current.position.y = Math.sin(t * 1.35) * 0.16;
       root.current.rotation.z = (flip ? -1 : 1) * 0.12 + Math.sin(t * 0.7) * 0.09;
     }
-    // Narrowing the wings toward the body reads as a flap for the flat 2D wings.
-    if (wings.current) wings.current.scale.x = 0.55 + 0.45 * Math.abs(Math.cos(t * 6));
+    // Opening and closing the wing splay reads as a flap.
+    const flap = 0.82 + 0.32 * Math.cos(t * 5);
+    for (let i = 0; i < WINGS.length; i++) {
+      const g = wingRefs.current[i];
+      if (g) g.rotation.z = WINGS[i].rot * flap;
+    }
   });
   return (
     <Float speed={1} rotationIntensity={0.08} floatIntensity={0.4}>
@@ -173,12 +187,19 @@ export function Butterfly({ body = DARK, wing = "#7bb0e4", flip = false }: { bod
             </mesh>
           </group>
         ))}
-        <group ref={wings} position={[0, 0.22, -0.04]}>
+        <group position={[0, 0.22, -0.04]}>
           {WINGS.map((wg, i) => (
-            <group key={i} rotation={[0, 0, wg.rot]} scale={[wg.s, wg.s, 1]}>
+            <group
+              key={i}
+              ref={(el) => {
+                wingRefs.current[i] = el;
+              }}
+              rotation={[0, 0, wg.rot]}
+              scale={[wg.s, wg.s, 1]}
+            >
               <mesh>
                 <extrudeGeometry args={[wingShape, { depth: 0.05, bevelEnabled: false }]} />
-                <meshBasicMaterial color={wing} transparent opacity={0.66} side={DoubleSide} />
+                <meshBasicMaterial color={wing} transparent opacity={0.72} side={DoubleSide} />
                 <Ink thickness={0.05} />
               </mesh>
               {wg.eye && (
