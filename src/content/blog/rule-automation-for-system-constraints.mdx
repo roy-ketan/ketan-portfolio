@@ -1,0 +1,51 @@
+---
+title: "Validating system constraints with rule automation"
+publishedAt: "2026-10-04"
+author: "Ketan Ratan Roy"
+summary: "Why I model system invariants as small, testable rules instead of scattered if-statements, and what that does for correctness and review time."
+---
+
+A lot of backend work comes down to one question: is this system in a valid state? When the answer lives in scattered `if` statements, every new feature quietly breaks an assumption somewhere else. At Dassault Systèmes I work on rule-automation services that move those checks into one place.
+
+## Rules as data, not control flow
+
+The core idea is simple. Instead of burying a constraint inside a request handler, describe it as a named rule that takes a state and returns a verdict:
+
+```python title="rules.py"
+from dataclasses import dataclass
+from typing import Callable
+
+@dataclass(frozen=True)
+class Rule:
+    name: str
+    check: Callable[[dict], bool]
+    message: str
+
+RULES = [
+    Rule("has_owner", lambda s: bool(s.get("owner")), "Every object needs an owner."),
+    Rule("positive_quantity", lambda s: s.get("quantity", 0) > 0, "Quantity must be positive."),
+]
+
+def validate(state: dict) -> list[str]:
+    return [r.message for r in RULES if not r.check(state)]
+```
+
+Each rule is small enough to read in one glance and test on its own.
+
+## What this buys you
+
+- **Correctness.** An invariant is written once, so it cannot drift between code paths.
+- **Reviewability.** Reviewers read a list of rules instead of tracing control flow through several services.
+- **Consistency.** The same rules run wherever the state is validated, which matters most in distributed environments.
+- **Lower error rates.** Moving checks into rules is part of how my team reduced validation errors by about 30%.
+
+## Where it gets harder
+
+Rules are easy to write and harder to keep honest. Two things I watch for:
+
+1. **Rule interactions.** Two rules that are each correct can contradict each other. Running the whole rule set against a library of known-good and known-bad states catches this early.
+2. **Error quality.** A rule that fails with a vague message just moves the debugging cost to someone else. Every rule should say what is wrong and how to fix it.
+
+## Takeaway
+
+If a constraint matters, give it a name, a test and a single home. Your future self, and whoever reviews your next change, will thank you.

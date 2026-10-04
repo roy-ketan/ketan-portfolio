@@ -1,0 +1,42 @@
+---
+title: "From voice to action: designing a low-latency command pipeline"
+publishedAt: "2026-10-04"
+author: "Ketan Ratan Roy"
+summary: "Lessons from building an NLP-driven backend that turns spoken commands into structured system actions, and why latency shaped every design choice."
+---
+
+During my internship at Dassault Systèmes I worked on a backend that lets someone run structured commands hands-free: say what you want, and the system performs it. The hard part was not any single model. It was making the whole chain feel instant.
+
+## The shape of the pipeline
+
+Every command moves through the same stages:
+
+1. **Speech to text.** Audio becomes a transcript.
+2. **Intent detection.** The transcript is mapped to a known intent and its parameters.
+3. **Action execution.** A thin API layer turns the intent into a concrete system action.
+
+```python title="pipeline.py"
+def handle_utterance(audio: bytes) -> dict:
+    text = transcribe(audio)
+    intent = classify_intent(text)
+    if intent is None:
+        return {"status": "unrecognized", "text": text}
+    return execute(intent)
+```
+
+Keeping each stage behind a plain function boundary made them easy to test and to swap out independently.
+
+## Intent accuracy comes from constraint
+
+Free-form language is messy, so I treated intent detection as a classification problem over a closed set of commands rather than open-ended understanding. Narrowing the problem is what got intent accuracy past 97%. Anything the classifier was not sure about was rejected instead of guessed, because a wrong action is worse than asking again.
+
+## Latency is a feature
+
+A voice interface that pauses feels broken. Optimizing the speech-to-text components cut response time by about 30%, and that improvement did more for how the product felt than any accuracy gain. Two habits helped:
+
+- **Measure each stage separately.** One total number hides which stage is slow.
+- **Run commands concurrently.** Independent commands should not queue behind each other.
+
+## Takeaway
+
+For real-time systems, define the closed set of things the system must do, make each stage observable, and treat latency as a requirement from day one rather than a cleanup task.
