@@ -137,13 +137,16 @@ const WINGS = [
 export function Butterfly({ body = DARK, wing = "#7bb0e4", flip = false }: { body?: string; wing?: string; flip?: boolean }) {
   const root = useRef<Group>(null);
   const wings = useRef<Group>(null);
+  const ph = flip ? 1.7 : 0;
   useFrame(({ clock }) => {
-    const t = clock.elapsedTime;
+    const t = clock.elapsedTime + ph;
     if (root.current) {
-      root.current.position.y = Math.sin(t * 1.1) * 0.12;
-      root.current.rotation.z = (flip ? -1 : 1) * 0.15 + Math.sin(t * 0.6) * 0.06;
+      root.current.position.x = Math.sin(t * 0.9) * 0.18;
+      root.current.position.y = Math.sin(t * 1.35) * 0.16;
+      root.current.rotation.z = (flip ? -1 : 1) * 0.12 + Math.sin(t * 0.7) * 0.09;
     }
-    if (wings.current) wings.current.scale.x = 1 - Math.abs(Math.sin(t * 5)) * 0.12;
+    // Narrowing the wings toward the body reads as a flap for the flat 2D wings.
+    if (wings.current) wings.current.scale.x = 0.55 + 0.45 * Math.abs(Math.cos(t * 6));
   });
   return (
     <Float speed={1} rotationIntensity={0.08} floatIntensity={0.4}>

@@ -35,15 +35,12 @@ function Layout() {
     const g = root.current;
     if (!g) return;
     const scroll = Math.min(1.5, window.scrollY / window.innerHeight);
-    const tx = pointer.current.x * 0.7;
-    const ty = scroll * h * 0.35 - pointer.current.y * 0.45;
-    // Rotating the group around its centre lets props further out swing more, which reads as depth.
-    const ry = pointer.current.x * 0.14;
-    const rx = pointer.current.y * 0.1;
-    g.position.x += (tx - g.position.x) * 0.05;
-    g.position.y += (ty - g.position.y) * 0.05;
-    g.rotation.y += (ry - g.rotation.y) * 0.05;
-    g.rotation.x += (rx - g.rotation.x) * 0.05;
+    // The props are flat 2D cutouts, so parallax is translation only (rotating would foreshorten them).
+    // Props sit at different depths, so a single world-space shift already moves nearer ones more on screen.
+    const tx = pointer.current.x * 0.95;
+    const ty = scroll * h * 0.35 - pointer.current.y * 0.6;
+    g.position.x += (tx - g.position.x) * 0.06;
+    g.position.y += (ty - g.position.y) * 0.06;
     pop.current *= 0.86;
     g.scale.setScalar(1 + pop.current * 0.05);
   });
