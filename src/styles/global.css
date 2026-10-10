@@ -235,3 +235,18 @@
     @apply border-b-0;
   }
 }
+/* Scroll each parallax banner layer by exactly one tile so the loop is seamless. */
+@keyframes banner-scroll {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: calc(-1 * var(--tile));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .banner-parallax > * {
+    animation: none !important;
+  }
+}

@@ -22,6 +22,10 @@ pnpm build
 | `src/data/config.ts` | Site URL, SEO, typography, theme colors |
 | `src/content/blog/*.mdx` | Blog posts |
 
+## Credits
+
+Hero banner art: [Mountain Dusk Parallax Background](https://ansimuz.itch.io/mountain-dusk-parallax-background) by ansimuz, released under CC0 (public domain). Layers live in `public/banner/`.
+
 ## License
 
 MIT. See [LICENSE](LICENSE), which retains the original Starfolio copyright notice.

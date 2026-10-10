@@ -2,7 +2,7 @@ import React from "react";
 import BlurFade from "@/components/magicui/blur-fade";
 import BlurFadeText from "@/components/magicui/blur-fade-text";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import BannerWaves from "@/components/banner-waves";
+import BannerParallax from "@/components/banner-parallax";
 import { DATA } from "@/data/resume";
 import Markdown from "react-markdown";
 import ContactSection from "@/components/section/contact-section";
@@ -138,7 +138,7 @@ export default function HomePage() {
       <section id="hero">
         <div className="mx-auto w-full max-w-2xl space-y-8">
           <BlurFade delay={BLUR_FADE_DELAY}>
-            <BannerWaves className="h-32 md:h-40" />
+            <BannerParallax className="h-48 md:h-64" />
           </BlurFade>
           <div className="gap-2 gap-y-6 flex flex-col md:flex-row justify-between">
             <div className="gap-2 flex flex-col order-2 md:order-1">
