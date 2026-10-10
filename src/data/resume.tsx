@@ -21,9 +21,9 @@ export const DATA = {
   location: "Bengaluru, India",
   locationLink: "https://www.google.com/maps/place/bengaluru",
   description:
-    "Software engineer at Intuit in Bengaluru. Before that I built Python and C++ backend services at Dassault Systèmes, and I build cloud-native and real-time voice AI projects on the side.",
+    "Software engineer at Intuit in Bengaluru, working on QuickBooks company management and cloning. Before that I customized CATIA for clients and built Python and C++ backend services at Dassault Systèmes.",
   summary:
-    "I like building the parts of a system that have to hold up: backend services, data models and the pipelines around them. I'm a software engineer at Intuit in Bengaluru. Before that I spent a year and a half at Dassault Systèmes, where I wrote Python rule-automation services and contributed to core C++ modules, after [an internship building a low-latency, NLP-driven backend](/#work) that turns spoken commands into system actions. I [graduated from NIT Rourkela](/#education), [won NorCalHacks and placed second at MLH DragonHacks](/#hackathons), and have solved 500+ problems on LeetCode (top 4.3% in a weekly contest). Outside work I build [cloud-native and real-time AI projects](/#projects), from an 8-microservice store on Amazon EKS to a voice agent that answers in under 1.2 seconds. You can also [download my résumé](/Ketan_Roy_Resume.pdf).",
+    "I like building the parts of a system that have to hold up: backend services, data models and the pipelines around them. I'm a software engineer at Intuit in Bengaluru, working on QuickBooks company management and the company-clone service that anonymizes data so people can learn the product. Before that I spent a year and a half at Dassault Systèmes, customizing CATIA for clients, writing Python rule-automation services and contributing to core C++ modules, after [an internship building a low-latency, NLP-driven backend](/#work) that turns spoken commands into system actions. I [graduated from NIT Rourkela](/#education), [won NorCalHacks and placed second at MLH DragonHacks](/#hackathons), and have solved 500+ problems on LeetCode (top 4.3% in a weekly contest). Outside work I build [cloud-native and real-time AI projects](/#projects), from an 8-microservice store on Amazon EKS to a voice agent that answers in under 1.2 seconds. You can also [download my résumé](/Ketan_Roy_Resume.pdf).",
   avatarUrl: "/avatar.svg",
   ogImage: "/og_image.png",
   sections: {
@@ -122,7 +122,8 @@ export const DATA = {
       logoUrl: "https://www.google.com/s2/favicons?domain=intuit.com&sz=128",
       start: "June 2026",
       end: undefined,
-      description: "Software engineer at Intuit, based in Bengaluru.",
+      description:
+        "Working on two QuickBooks teams. On the Company Management team, we handle everything related to company creation in QuickBooks. On the Company Clone v2 team, we build the service that copies a source company into a target company with personal data anonymized, so stakeholders and users can learn and explore the product with realistic data for education and awareness.",
     },
     {
       company: "Dassault Systèmes",
@@ -134,7 +135,7 @@ export const DATA = {
       start: "June 2025",
       end: "June 2026",
       description:
-        "Backend engineering in Python and C++. Designed and delivered scalable Python rule-automation services that validate complex system constraints, and wrote domain-specific-language business logic that enforces system invariants, lowering error rates by 30%. Contributed to core C++ modules for structured data modeling, replacing deprecated APIs in legacy backend logic for better performance and reliability. Implemented policy-based access control for object and attribute-level permissions and shipped security updates through Git-driven CI/CD pipelines.",
+        "Customization and development projects on CATIA for clients such as McLaren and SNC. Also did backend engineering in Python and C++: designed and delivered scalable Python rule-automation services that validate complex system constraints, and wrote domain-specific-language business logic that enforces system invariants, lowering error rates by 30%. Contributed to core C++ modules for structured data modeling, replacing deprecated APIs in legacy backend logic for better performance and reliability. Implemented policy-based access control for object and attribute-level permissions and shipped security updates through Git-driven CI/CD pipelines.",
     },
     {
       company: "Dassault Systèmes",
