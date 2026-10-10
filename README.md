@@ -1,6 +1,6 @@
 # Ketan Ratan Roy - Portfolio
 
-Personal portfolio for Ketan Ratan Roy, software engineer at Dassault Systèmes.
+Personal portfolio for Ketan Ratan Roy, software engineer at Intuit.
 
 Built on the open-source [Starfolio](https://github.com/webrating/starfolio) template (MIT) with Astro, React, Tailwind CSS v4, shadcn/ui and MDX. Deployed on Vercel.
 
