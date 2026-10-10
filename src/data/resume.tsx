@@ -17,7 +17,7 @@ type HackathonLink = { title: string; href: string; icon: ReactNode };
 export const DATA = {
   name: "Ketan Ratan Roy - Software Engineer",
   initials: "KR",
-  url: "https://ketan-portfolio.vercel.app",
+  url: "https://ketan-portfolio-sigma.vercel.app",
   location: "Bengaluru, India",
   locationLink: "https://www.google.com/maps/place/bengaluru",
   description:

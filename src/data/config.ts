@@ -3,7 +3,7 @@ export const CONFIG = {
   // Site Settings
   // ---------------------------------------------------------------------------
   site: {
-    url: "https://ketan-portfolio.vercel.app",
+    url: "https://ketan-portfolio-sigma.vercel.app",
     locale: "en_IN",
     twitterHandle: "",
   },
