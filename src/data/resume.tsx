@@ -155,7 +155,7 @@ export const DATA = {
       school: "National Institute of Technology, Rourkela",
       href: "https://www.nitrkl.ac.in",
       degree: "B.Tech, CGPA 8.22",
-      logoUrl: "https://www.google.com/s2/favicons?domain=nitrkl.ac.in&sz=128",
+      logoUrl: "/logos/nit-rourkela.png",
       start: "2021",
       end: "2025",
     },
