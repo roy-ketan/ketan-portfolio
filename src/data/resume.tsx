@@ -131,7 +131,7 @@ export const DATA = {
       badges: [] as string[],
       location: "India",
       title: "Software Engineer",
-      logoUrl: "https://www.google.com/s2/favicons?domain=3ds.com&sz=128",
+      logoUrl: "/logos/dassault-systemes.png",
       start: "June 2025",
       end: "June 2026",
       description:
@@ -143,7 +143,7 @@ export const DATA = {
       badges: [] as string[],
       location: "India",
       title: "Software Engineer Intern",
-      logoUrl: "https://www.google.com/s2/favicons?domain=3ds.com&sz=128",
+      logoUrl: "/logos/dassault-systemes.png",
       start: "January 2025",
       end: "June 2025",
       description:
@@ -163,7 +163,7 @@ export const DATA = {
       school: "Balaji Convent Jr College, Nagpur",
       href: "https://www.google.com/search?q=Balaji+Convent+Junior+College+Nagpur",
       degree: "Higher Secondary (Class XII), 90.62%",
-      logoUrl: "https://avatar.vercel.sh/balaji-convent?size=40",
+      logoUrl: "/logos/balaji-convent.png",
       start: "2019",
       end: "2020",
     },
