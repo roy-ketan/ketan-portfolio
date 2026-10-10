@@ -23,7 +23,7 @@ export const DATA = {
   description:
     "Software engineer at Intuit in Bengaluru, working on QuickBooks company management and cloning. Before that I customized CATIA for clients and built Python and C++ backend services at Dassault Systèmes.",
   summary:
-    "I like building the parts of a system that have to hold up: backend services, data models and the pipelines around them. I'm a software engineer at Intuit in Bengaluru, working on QuickBooks company management and the company-clone service that anonymizes data so people can learn the product. Before that I spent a year and a half at Dassault Systèmes, customizing CATIA for clients, writing Python rule-automation services and contributing to core C++ modules, after [an internship building a low-latency, NLP-driven backend](/#work) that turns spoken commands into system actions. I [graduated from NIT Rourkela](/#education), [won NorCalHacks and placed second at MLH DragonHacks](/#hackathons), and have solved 500+ problems on LeetCode (top 4.3% in a weekly contest). Outside work I [build my own projects](/#projects). You can also [download my résumé](/Ketan_Roy_Resume.pdf).",
+    "I'm a software engineer at Intuit in Bengaluru, working on QuickBooks company management and company cloning. Before that, I spent a year and a half at Dassault Systèmes customizing CATIA for clients and building backend systems, after starting out on 3DTalk, an AI assistant that understands and executes voice commands to help developers and designers. I graduated from NIT Rourkela, won NorCalHacks and placed second at MLH DragonHacks. Outside work I build my own projects, and you can [download my résumé](/Ketan_Roy_Resume.pdf) below.",
   avatarUrl: "/avatar.svg",
   ogImage: "/og_image.png",
   sections: {
@@ -147,7 +147,7 @@ export const DATA = {
       start: "January 2025",
       end: "June 2025",
       description:
-        "Built a real-time, low-latency, NLP-driven backend for hands-free work: natural-language commands in, structured system actions out. Designed the command-processing pipeline with modern NLP techniques, reaching 97%+ intent accuracy, and integrated an EKL and Python API layer to execute actions programmatically. Optimized the speech-to-text components to cut response time by 30%, enabling low-latency, concurrent command execution.",
+        "Worked on 3DTalk, an AI assistant that understands voice commands and executes them to help developers and designers work hands-free.",
     },
   ],
   education: [
