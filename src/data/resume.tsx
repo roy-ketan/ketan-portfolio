@@ -24,7 +24,7 @@ export const DATA = {
     "Software engineer at Intuit in Bengaluru, working on QuickBooks company management and cloning. Before that I customized CATIA for clients and built Python and C++ backend services at Dassault Systèmes.",
   summary:
     "I'm a software engineer at Intuit in Bengaluru, working on QuickBooks company management and company cloning. Before that, I spent a year and a half at Dassault Systèmes customizing CATIA for clients and building backend systems, after starting out on 3DTalk, an AI assistant that understands and executes voice commands to help developers and designers. I graduated from NIT Rourkela, won NorCalHacks and placed second at MLH DragonHacks. Outside work I build my own projects, and you can [download my résumé](/Ketan_Roy_Resume.pdf) below.",
-  avatarUrl: "/avatar-photo.png",
+  avatarUrl: "/avatar-pixel-art.png",
   ogImage: "/og_image.png",
   sections: {
     about: { order: 1, enabled: true, heading: "About" },
