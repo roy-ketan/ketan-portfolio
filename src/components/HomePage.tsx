@@ -136,10 +136,10 @@ export default function HomePage() {
   return (
     <main className="min-h-dvh flex flex-col gap-14 relative">
       <section id="hero">
-        <div className="mx-auto w-full max-w-2xl space-y-8">
-          <BlurFade delay={BLUR_FADE_DELAY}>
-            <BannerParallax className="h-48 md:h-64" />
-          </BlurFade>
+        <BlurFade delay={BLUR_FADE_DELAY}>
+          <BannerParallax className="relative left-1/2 h-64 w-screen max-w-none -translate-x-1/2 md:h-80" />
+        </BlurFade>
+        <div className="relative z-10 mx-auto -mt-20 w-full max-w-2xl space-y-8 md:-mt-24">
           <div className="gap-2 gap-y-6 flex flex-col md:flex-row justify-between">
             <div className="gap-2 flex flex-col order-2 md:order-1">
               <BlurFadeText
